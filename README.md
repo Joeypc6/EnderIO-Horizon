@@ -24,3 +24,9 @@ flattened to 26.x ones. Textures, models and language files are Ender IO's.
 - 1.12-only items and other mods' upgrades (Forestry, Thaumcraft, The One Probe) are left out.
 - The mod filter's mouse wheel (clearing a slot set within 2.5 s) isn't there.
 - Built for Horizon fdc87ae (Nightly 2026-11-08); see `horizon-native.json`.
+
+## Tested
+
+In game on Horizon `fdc87ae` builds this week (the last, `native-fdc87ae-83d10460ef68`, with the nine other ports): the machines' screens, all four
+conduit types, every filter's screen and matching (enchantment and soul filters through item conduits, ore dictionary through `c:`
+tags), the probe, the Yeta wrench, facades (a hardened one survives TNT, a plain one breaks), and the models against the 1.12 jar.
