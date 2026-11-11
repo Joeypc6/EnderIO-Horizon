@@ -1,0 +1,17 @@
+Ender IO 5.3.72 for Horizon
+
+This port is made from Ender IO 5.3.72 for Minecraft 1.12.2 (https://github.com/SleepyTrousers/EnderIO,
+branch release/1.12.2) by the Ender IO team (CrazyPants, HenryLoenwind, tterrag and contributors).
+
+Ender IO's code is released into the public domain under CC0 1.0
+(https://creativecommons.org/publicdomain/zero/1.0/legalcode). Attribution isn't required, but it's given here
+with thanks.
+
+EnderCore 1.12.2-0.5.78 (https://github.com/SleepyTrousers/EnderCore), Ender IO's library, is CC0 1.0 too. This
+port ships one of its textures, gui/widgets.png (the button frames of the machine screens), under the `endercore`
+namespace.
+
+Sounds: Ender IO uses some sounds from freesound.org under CC BY 3.0 or CC BY-NC 3.0
+(https://creativecommons.org/licenses/by/3.0/, https://creativecommons.org/licenses/by-nc/3.0/). Their authors,
+as Ender IO's README credits them: Glaneur de sons, luffy, Anton, pj1s, Syna-Max, Robinhood76, zimbot, LiamG_SFX,
+kuchenanderung1, and 170048@virtualwindow.co.za. Those under CC BY-NC 3.0 may not be used commercially.

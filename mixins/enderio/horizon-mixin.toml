@@ -1,0 +1,1112 @@
+[mod]
+id = "enderio"
+version = "5.3.72"
+
+# The Horizon commit this bundle was built and tested on.
+[compatibility]
+horizon_revision = "fdc87aecdbd116bf1e08adcd062fcbaea8c2e2ca"
+
+[[module]]
+id = "enderio"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio"
+source = "enderio.rs"
+
+[[module]]
+id = "enderio-ui"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_ui"
+source = "enderio_ui.rs"
+
+[[module]]
+id = "enderio-machines"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_machines"
+source = "enderio_machines.rs"
+
+[[module]]
+id = "enderio-conduits"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_conduits"
+source = "enderio_conduits.rs"
+
+[[module]]
+id = "enderio-filters"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_filters"
+source = "enderio_filters.rs"
+
+[[module]]
+id = "enderio-signal-filters"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_signal_filters"
+source = "enderio_signal_filters.rs"
+
+[[module]]
+id = "enderio-facades"
+file = "crates/horizon-client/src/game.rs"
+name = "enderio_facades"
+source = "enderio_facades.rs"
+
+[[module]]
+id = "enderio-blast"
+file = "crates/horizon-client/src/game/explosion.rs"
+name = "enderio_blast"
+source = "enderio_blast.rs"
+
+[[module]]
+id = "enderio-screen"
+file = "crates/horizon-client/src/game/native_hooks.rs"
+name = "enderio_screen"
+source = "enderio_screen.rs"
+
+[[module]]
+id = "enderio-rules"
+file = "crates/horizon-client/src/menu.rs"
+name = "enderio_rules"
+source = "enderio_rules.rs"
+
+[[module]]
+id = "enderio-particles"
+file = "crates/horizon-client/src/animate_tick.rs"
+name = "enderio_particles"
+source = "enderio_particles.rs"
+
+[[injection]]
+id = "eio-be"
+kind = "HEAD"
+hook = "block_entity"
+hook_version = 1
+helper = "h_be.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "entity", ty = "&mut Option<(String, horizon_world::nbt::Compound)>", value = "&mut *entity" },
+]
+
+[[injection]]
+id = "eio-be-ticks"
+kind = "HEAD"
+hook = "block_entity_ticks"
+hook_version = 1
+helper = "h_be_ticks.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "ticks", ty = "&mut bool", value = "&mut *ticks" },
+]
+
+[[injection]]
+id = "eio-be-container"
+kind = "HEAD"
+hook = "block_entity_container"
+hook_version = 1
+helper = "h_be_container.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "container", ty = "&mut Option<horizon_client::containers::ModContainer>", value = "&mut *container" },
+]
+
+[[injection]]
+id = "eio-be-energy"
+kind = "HEAD"
+hook = "block_entity_energy"
+hook_version = 1
+helper = "h_be_energy.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "energy", ty = "&mut Option<horizon_client::containers::ModEnergyBuffer>", value = "&mut *energy" },
+]
+
+[[injection]]
+id = "eio-be-tick"
+kind = "HEAD"
+hook = "block_entity_tick"
+hook_version = 1
+helper = "h_be_tick.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "entity", ty = "&mut horizon_client::containers::ModBlockEntity", value = "&mut *entity" },
+]
+
+[[injection]]
+id = "eio-accepts"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_container_accepts"
+helper = "h_accepts.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "entity", ty = "&horizon_client::containers::ModBlockEntity", value = "&*entity" },
+  { name = "slot", ty = "usize", value = "slot" },
+  { name = "stack", ty = "&horizon_client::items::ItemStack", value = "stack" },
+  { name = "face", ty = "Option<horizon_core::geometry::Direction>", value = "face" },
+  { name = "cancel", ty = "&mut bool", value = "&mut *cancel" },
+]
+
+[[injection]]
+id = "eio-slot-rules"
+kind = "HEAD"
+hook = "menu_slot_rules"
+hook_version = 1
+helper = "h_slot_rules.rs"
+bindings = [
+  { name = "menu", ty = "&str", value = "menu" },
+  { name = "slot", ty = "usize", value = "slot" },
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+  { name = "may_place", ty = "&mut bool", value = "&mut *may_place" },
+  { name = "max_stack", ty = "&mut u32", value = "&mut *max_stack" },
+]
+
+[[injection]]
+id = "eio-menu-button"
+kind = "HEAD"
+hook = "menu_button_v2"
+hook_version = 1
+helper = "h_menu_button.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "entity", ty = "&mut horizon_client::containers::ModBlockEntity", value = "&mut *entity" },
+  { name = "id", ty = "i32", value = "id" },
+  { name = "carried", ty = "&mut Option<ItemStack>", value = "&mut *carried" },
+]
+
+[[injection]]
+id = "eio-quick-move"
+kind = "HEAD"
+hook = "menu_quick_move"
+hook_version = 1
+helper = "h_quick_move.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "entity", ty = "&mut horizon_client::containers::ModBlockEntity", value = "&mut *entity" },
+  { name = "container_slots", ty = "usize", value = "container_slots" },
+  { name = "slot", ty = "usize", value = "slot" },
+  { name = "stack", ty = "&mut horizon_client::items::ItemStack", value = "&mut *stack" },
+  { name = "handled", ty = "&mut bool", value = "&mut *handled" },
+]
+
+[[injection]]
+id = "eio-menu-clicked"
+kind = "HEAD"
+hook = "menu_clicked"
+hook_version = 1
+helper = "h_menu_clicked.rs"
+bindings = [
+  { name = "uuid", ty = "u128", value = "uuid" },
+  { name = "slot", ty = "i32", value = "slot" },
+]
+
+[[injection]]
+id = "eio-right-click"
+kind = "HEAD"
+hook = "right_click_block"
+hook_version = 1
+helper = "h_right_click.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "face", ty = "[i32; 3]", value = "face" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-placed"
+kind = "HEAD"
+hook = "place_block"
+hook_version = 1
+helper = "h_placed.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+]
+
+[[injection]]
+id = "eio-destroy"
+kind = "HEAD"
+hook = "destroy_block"
+hook_version = 1
+helper = "h_destroy.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+]
+
+[[injection]]
+id = "eio-neighbor"
+kind = "HEAD"
+hook = "neighbor_changed"
+hook_version = 1
+helper = "h_neighbor.rs"
+bindings = [
+  { name = "level", ty = "&GameLevel<'_>", value = "&*self" },
+  { name = "pos", ty = "BlockPos", value = "pos" },
+  { name = "state", ty = "BlockStateId", value = "state" },
+]
+
+[[injection]]
+id = "eio-placement"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::GameLevel<'_>::native_state_for_placement"
+helper = "h_placement.rs"
+bindings = [
+  { name = "level", ty = "&crate::game::GameLevel<'_>", value = "&*self" },
+  { name = "state", ty = "horizon_world::registry::BlockStateId", value = "state" },
+  { name = "context", ty = "&horizon_world::level::PlacementContext", value = "context" },
+  { name = "answer", ty = "&mut Option<Option<horizon_world::registry::BlockStateId>>", value = "&mut *answer" },
+]
+
+[[injection]]
+id = "eio-level-tick"
+kind = "HEAD"
+hook = "level_tick_post"
+hook_version = 1
+helper = "h_level_tick.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "dimension", ty = "&str", value = "dimension" },
+]
+
+[[injection]]
+id = "eio-item-energy"
+kind = "HEAD"
+hook = "item_energy_buffer"
+hook_version = 1
+helper = "h_item_energy.rs"
+bindings = [
+  { name = "item", ty = "&str", value = "item" },
+  { name = "buffer", ty = "&mut Option<crate::game::native_item_energy::ItemEnergyBuffer>", value = "&mut *buffer" },
+]
+
+[[injection]]
+id = "eio-tooltip"
+kind = "HEAD"
+hook = "tooltip"
+hook_version = 1
+helper = "h_tooltip.rs"
+bindings = [
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+  { name = "lines", ty = "&mut Vec<(Text, u32)>", value = "&mut *lines" },
+]
+
+[[injection]]
+id = "eio-update-tag"
+kind = "HEAD"
+hook = "block_entity_update_tag"
+hook_version = 1
+helper = "h_update_tag.rs"
+bindings = [
+  { name = "entity", ty = "&horizon_client::containers::ModBlockEntity", value = "&*entity" },
+  { name = "tag", ty = "&mut Option<horizon_world::nbt::Compound>", value = "&mut *tag" },
+]
+
+[[injection]]
+id = "eio-screen"
+kind = "HEAD"
+hook = "screen"
+hook_version = 1
+helper = "h_screen.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "screen", ty = "&mut Option<crate::game::native_hooks::NativeScreen>", value = "&mut *screen" },
+]
+
+[[injection]]
+id = "eio-screen-draw"
+kind = "HEAD"
+hook = "screen_draw"
+hook_version = 1
+helper = "h_screen_draw.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "block", ty = "&str", value = "block" },
+  { name = "data", ty = "&[i32]", value = "data" },
+  { name = "batch", ty = "&mut horizon_client::hud::HudBatch", value = "&mut *batch" },
+  { name = "origin", ty = "[f32; 2]", value = "origin" },
+]
+
+[[injection]]
+id = "eio-screen-tooltip"
+kind = "HEAD"
+hook = "screen_tooltip"
+hook_version = 1
+helper = "h_screen_tooltip.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "block", ty = "&str", value = "block" },
+  { name = "data", ty = "&[i32]", value = "data" },
+  { name = "at", ty = "[f32; 2]", value = "at" },
+  { name = "lines", ty = "&mut Vec<String>", value = "&mut *lines" },
+]
+
+[[injection]]
+id = "eio-screen-pressed"
+kind = "HEAD"
+hook = "screen_mouse_button_pressed_pre"
+hook_version = 1
+helper = "h_screen_pressed.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "button", ty = "i32", value = "button" },
+  { name = "modifiers", ty = "u32", value = "modifiers" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-screen-released"
+kind = "HEAD"
+hook = "screen_mouse_button_released_pre"
+hook_version = 1
+helper = "h_screen_released.rs"
+bindings = [
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-screen-dragged"
+kind = "HEAD"
+hook = "screen_mouse_dragged_pre"
+hook_version = 1
+helper = "h_screen_dragged.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "delta", ty = "[f32; 2]", value = "delta" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-screen-scrolled"
+kind = "HEAD"
+hook = "screen_mouse_scrolled_pre"
+hook_version = 1
+helper = "h_screen_scrolled.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "scroll", ty = "[f64; 2]", value = "scroll" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-screen-key"
+kind = "HEAD"
+hook = "screen_key_pressed_pre"
+hook_version = 1
+helper = "h_screen_key.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "key", ty = "&str", value = "key" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-screen-char"
+kind = "HEAD"
+hook = "screen_char_typed_pre"
+hook_version = 1
+helper = "h_screen_char.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "c", ty = "char", value = "c" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-server-tick"
+kind = "HEAD"
+hook = "server_tick"
+hook_version = 1
+helper = "h_server_tick.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "eio-kit-frame"
+kind = "HEAD"
+hook = "frame"
+hook_version = 1
+helper = "h_kit_frame.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "eio-interact-entity"
+kind = "HEAD"
+hook = "interact_entity"
+hook_version = 1
+helper = "h_interact_entity.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "entity", ty = "i32", value = "entity" },
+  { name = "kind", ty = "&str", value = "kind" },
+  { name = "stack", ty = "Option<&horizon_client::items::ItemStack>", value = "stack" },
+  { name = "claimed", ty = "&mut bool", value = "&mut *claimed" },
+]
+
+[[injection]]
+id = "eio-item-fluid-tank"
+kind = "HEAD"
+hook = "item_fluid_tank"
+hook_version = 1
+helper = "h_item_fluid_tank.rs"
+bindings = [
+  { name = "item", ty = "&str", value = "item" },
+  { name = "capacity", ty = "&mut Option<i32>", value = "&mut *capacity" },
+]
+
+[[injection]]
+id = "eio-submit"
+kind = "HEAD"
+hook = "block_entity_submit"
+hook_version = 1
+helper = "h_submit.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "block", ty = "&str", value = "block" },
+  { name = "entity", ty = "&horizon_client::containers::ModBlockEntity", value = "&*entity" },
+  { name = "draw", ty = "&mut crate::game::native_block_entity_draw::BlockEntityDraw", value = "&mut *draw" },
+]
+
+[[injection]]
+id = "eio-conduit-destroy"
+kind = "HEAD"
+hook = "destroy_block"
+hook_version = 1
+helper = "h_conduit_destroy.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "eio-signal"
+kind = "HEAD"
+hook = "block_signal"
+hook_version = 1
+helper = "h_signal.rs"
+bindings = [
+  { name = "level", ty = "&crate::game::GameLevel<'_>", value = "&*self" },
+  { name = "dimension", ty = "crate::game::LevelDimension", value = "dimension" },
+  { name = "pos", ty = "horizon_core::position::BlockPos", value = "pos" },
+  { name = "state", ty = "horizon_world::registry::BlockStateId", value = "state" },
+  { name = "face", ty = "horizon_core::geometry::Direction", value = "face" },
+  { name = "direct", ty = "bool", value = "direct" },
+  { name = "signal", ty = "&mut i32", value = "&mut *signal" },
+]
+
+[[injection]]
+id = "eio-wheel"
+kind = "HEAD"
+hook = "wheel"
+hook_version = 1
+helper = "h_wheel.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "steps", ty = "f32", value = "steps" },
+  { name = "claimed", ty = "&mut bool", value = "&mut *claimed" },
+]
+
+[[injection]]
+id = "eio-net"
+kind = "HEAD"
+hook = "net_from_client"
+hook_version = 1
+helper = "h_net.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "player", ty = "u128", value = "player" },
+  { name = "channel", ty = "&str", value = "channel" },
+  { name = "data", ty = "&[u8]", value = "data" },
+]
+
+[[injection]]
+id = "eio-hud"
+kind = "HEAD"
+hook = "hud"
+hook_version = 1
+helper = "h_hud.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "batch", ty = "&mut horizon_client::hud::HudBatch", value = "&mut *batch" },
+]
+
+[[injection]]
+id = "eio-break-speed"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_break_speed"
+helper = "h_break_speed.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "speed", ty = "&mut f32", value = "&mut *speed" },
+]
+
+[[injection]]
+id = "eio-signal-source"
+kind = "HEAD"
+hook = "is_signal_source"
+hook_version = 1
+helper = "h_signal_source.rs"
+bindings = [
+  { name = "level", ty = "&crate::game::GameLevel<'_>", value = "&*self" },
+  { name = "state", ty = "horizon_world::registry::BlockStateId", value = "state" },
+  { name = "source", ty = "&mut bool", value = "&mut *source" },
+]
+
+[[injection]]
+id = "eio-energy"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::machines::native_energy::Game<'_>::native_energy"
+helper = "energy_view.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "dimension", ty = "&str", value = "dimension" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "face", ty = "Direction", value = "face" },
+]
+
+[[injection]]
+id = "eio-energy-transfer"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::machines::native_energy::Game<'_>::native_energy_transfer"
+helper = "energy_transfer.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "dimension", ty = "&str", value = "dimension" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "face", ty = "Direction", value = "face" },
+  { name = "amount", ty = "i32", value = "amount" },
+  { name = "insert", ty = "bool", value = "insert" },
+  { name = "simulate", ty = "bool", value = "simulate" },
+]
+
+[[injection]]
+id = "eio-can-take"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::machines::Containers<'_>::can_take"
+helper = "can_take.rs"
+bindings = [
+  { name = "c", ty = "&Containers<'_>", value = "&*self" },
+  { name = "view", ty = "&View", value = "view" },
+  { name = "slot", ty = "usize", value = "slot" },
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+  { name = "face", ty = "Direction", value = "face" },
+]
+
+[[injection]]
+id = "eio-drops"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_block_drops"
+helper = "drops.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "state", ty = "BlockStateId", value = "state" },
+  { name = "explosion", ty = "Option<f32>", value = "explosion" },
+  { name = "drops", ty = "&mut Vec<ItemStack>", value = "&mut *drops" },
+]
+
+[[injection]]
+id = "eio-be-removed"
+kind = "HEAD"
+target = "horizon_client::game::<GameLevel<'_> as LevelAccess>::remove_block_entity"
+helper = "be_removed.rs"
+bindings = [
+  { name = "level", ty = "&mut crate::game::GameLevel<'_>", value = "&mut *self" },
+  { name = "pos", ty = "horizon_core::position::BlockPos", value = "pos" },
+]
+
+[[injection]]
+id = "eio-custom-fluids"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_custom_block_fluids"
+helper = "custom_fluids.rs"
+bindings = [
+  { name = "block", ty = "&str", value = "block" },
+  { name = "custom", ty = "&mut bool", value = "&mut *custom" },
+]
+
+[[injection]]
+id = "eio-custom-tanks"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_custom_fluid_tanks"
+helper = "custom_tanks.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "side", ty = "Option<horizon_core::geometry::Direction>", value = "side" },
+  { name = "out", ty = "&mut Option<Vec<horizon_client::mod_api::NativeFluidTankView>>", value = "&mut *out" },
+]
+
+[[injection]]
+id = "eio-custom-fill"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_custom_fluid_fill"
+helper = "custom_fill.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "side", ty = "Option<horizon_core::geometry::Direction>", value = "side" },
+  { name = "resource", ty = "&horizon_client::mod_api::NativeFluidStack", value = "resource" },
+  { name = "action", ty = "horizon_client::mod_api::NativeFluidAction", value = "action" },
+  { name = "out", ty = "&mut Option<i32>", value = "&mut *out" },
+]
+
+[[injection]]
+id = "eio-custom-drain"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_custom_fluid_drain"
+helper = "custom_drain.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "side", ty = "Option<horizon_core::geometry::Direction>", value = "side" },
+  { name = "request", ty = "&horizon_client::mod_api::NativeFluidDrain", value = "request" },
+  { name = "action", ty = "horizon_client::mod_api::NativeFluidAction", value = "action" },
+  { name = "out", ty = "&mut Option<horizon_client::mod_api::NativeFluidStack>", value = "&mut *out" },
+]
+
+[[injection]]
+id = "eio-animate"
+kind = "HEAD"
+target = "horizon_client_lib::animate_tick::animate_tick"
+helper = "animate.rs"
+bindings = [
+  { name = "engine", ty = "&mut ParticleEngine", value = "&mut *engine" },
+  { name = "ctx", ty = "&AnimateContext<'_>", value = "ctx" },
+  { name = "player", ty = "[i32; 3]", value = "player" },
+]
+
+[[injection]]
+id = "eio-has-analog"
+kind = "HEAD"
+hook = "has_analog_output"
+hook_version = 1
+helper = "has_analog.rs"
+bindings = [
+  { name = "level", ty = "&crate::game::GameLevel<'_>", value = "&*self" },
+  { name = "state", ty = "horizon_world::registry::BlockStateId", value = "state" },
+  { name = "output", ty = "&mut bool", value = "&mut *output" },
+]
+
+[[injection]]
+id = "eio-analog"
+kind = "HEAD"
+hook = "analog_output"
+hook_version = 1
+helper = "analog.rs"
+bindings = [
+  { name = "level", ty = "&crate::game::GameLevel<'_>", value = "&*self" },
+  { name = "pos", ty = "horizon_core::position::BlockPos", value = "pos" },
+  { name = "state", ty = "horizon_world::registry::BlockStateId", value = "state" },
+  { name = "output", ty = "&mut i32", value = "&mut *output" },
+]
+
+[[injection]]
+id = "eio-list"
+kind = "HEAD"
+hook = "mods"
+hook_version = 1
+helper = "list.rs"
+bindings = [
+  { name = "mods", ty = "&mut Vec<crate::game::native_hooks::NativeMod>", value = "&mut *mods" },
+]
+
+[[injection]]
+id = "eio-embedded-content"
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::mods::content_root"
+helper = "embedded_content.rs"
+bindings = [
+  { name = "root", ty = "&std::path::Path", value = "root" },
+  { name = "enabled", ty = "&std::collections::BTreeSet<String>", value = "enabled" },
+  { name = "dev", ty = "&[std::path::PathBuf]", value = "dev" },
+]
+
+[[injection]]
+id = "eio-blast-resistance"
+priority = 50
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::explosion::Game<'_>::exploded_positions"
+helper = "blast_resistance.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "center", ty = "[f64; 3]", value = "center" },
+  { name = "radius", ty = "f32", value = "radius" },
+  { name = "resists", ty = "Option<([i32; 3], f32)>", value = "resists" },
+]
+
+[[crate]]
+id = "optional"
+path = "optional"
+
+# ---- BEGIN JEI KIT (written by jei-kit/apply.py; don't edit here)
+[[injection]]
+id = "enderio-kit-panel-event"
+priority = 110
+kind = "HEAD"
+hook = "panel_event"
+hook_version = 1
+helper = "kit_jei_event.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "mod_id", ty = "&str", value = "mod_id" },
+  { name = "event", ty = "&crate::game::native_hooks::NativePanelEvent", value = "event" },
+]
+
+[[module]]
+id = "enderio-kit-collection"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_collection_enderio"
+source = "kit_collection.rs"
+
+[[module]]
+id = "enderio-kit-math"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_math_enderio"
+source = "kit_math.rs"
+
+[[module]]
+id = "enderio-kit-collection-size"
+file = "crates/horizon-client/src/game/native_panel.rs"
+name = "hz_kit_panel_enderio"
+source = "kit_panel.rs"
+
+[[module]]
+id = "enderio-kit-loot-items"
+file = "crates/horizon-items/src/items.rs"
+name = "hz_kit_loot_enderio"
+source = "kit_loot_items.rs"
+
+[[module]]
+id = "enderio-kit-loot-keys"
+file = "crates/horizon-world/src/loot.rs"
+name = "hz_kit_keys_enderio"
+source = "kit_loot_keys.rs"
+
+[[module]]
+id = "enderio-kit-window"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_window_enderio"
+source = "kit_window.rs"
+
+[[module]]
+id = "enderio-kit-creative"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_creative_enderio"
+source = "kit_creative.rs"
+
+[[injection]]
+id = "enderio-kit-window-hud-before"
+priority = 110
+kind = "HEAD"
+target = "horizon_client::game::Game<'_>::hud"
+helper = "kit_window_hud_before.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "enderio-kit-window-hud-after"
+priority = 110
+kind = "HEAD"
+target = "horizon_client::game::music::Game<'_>::draw_music_toast"
+helper = "kit_window_hud_after.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "batch", ty = "&mut horizon_client::hud::HudBatch", value = "&mut *batch" },
+]
+
+[[injection]]
+id = "enderio-kit-window-pressed"
+priority = 110
+kind = "HEAD"
+hook = "screen_mouse_button_pressed_pre"
+hook_version = 1
+helper = "kit_window_pressed.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "button", ty = "i32", value = "button" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-window-released"
+priority = 110
+kind = "HEAD"
+hook = "screen_mouse_button_released_pre"
+hook_version = 1
+helper = "kit_panel_released.rs"
+bindings = [
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+]
+
+[[injection]]
+id = "enderio-kit-window-key"
+priority = 110
+kind = "HEAD"
+hook = "screen_key_pressed_pre"
+hook_version = 1
+helper = "kit_window_key.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "screen" },
+  { name = "key", ty = "&str", value = "key" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-window-char"
+priority = 110
+kind = "HEAD"
+hook = "screen_char_typed_pre"
+hook_version = 1
+helper = "kit_window_char.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "c", ty = "char", value = "c" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-window-scrolled"
+priority = 110
+kind = "HEAD"
+hook = "screen_mouse_scrolled_pre"
+hook_version = 1
+helper = "kit_window_scrolled.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "scroll", ty = "[f64; 2]", value = "scroll" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-slot-tip"
+priority = 110
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::stations::Game<'_>::draw_slot_tooltip"
+helper = "kit_slot_tip.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+]
+
+[[injection]]
+id = "enderio-kit-screen-tip"
+priority = 110
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::native_hooks::Game<'_>::draw_native_screen_tooltip"
+helper = "kit_screen_tip.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+]
+
+[[injection]]
+id = "enderio-kit-panel-tint"
+priority = 110
+kind = "HEAD"
+target = "horizon_client::game::native_panel::Game<'_>::draw_mod_browser"
+helper = "kit_panel_tint.rs"
+bindings = [
+  { name = "game", ty = "&Game<'_>", value = "&*self" },
+  { name = "batch", ty = "&mut HudBatch", value = "&mut *batch" },
+]
+
+[[injection]]
+id = "enderio-kit-no-recipes-line"
+priority = 110
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::native_hooks::Game<'_>::native_chat"
+helper = "kit_no_recipes_line.rs"
+bindings = [
+  { name = "text", ty = "&str", value = "text" },
+]
+
+[[injection]]
+id = "enderio-kit-creative-width"
+priority = 110
+kind = "HEAD"
+cancellable = true
+target = "horizon_client::game::native_hooks::Game<'_>::native_screen_width"
+helper = "kit_creative_width.rs"
+
+[[module]]
+id = "enderio-kit-layer"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_layer_enderio"
+source = "kit_layer.rs"
+
+[[module]]
+id = "enderio-kit-guide"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_guide_enderio"
+source = "kit_guide.rs"
+
+[[injection]]
+id = "enderio-kit-layer-frame"
+kind = "HEAD"
+hook = "frame"
+hook_version = 1
+helper = "kit_layer_frame.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-frame"
+priority = 50
+kind = "HEAD"
+hook = "frame"
+hook_version = 1
+helper = "kit_guide_frame.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-render_post"
+priority = 50
+kind = "HEAD"
+hook = "screen_render_post"
+hook_version = 1
+helper = "kit_guide_render_post.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "batch", ty = "&mut horizon_client::hud::HudBatch", value = "&mut *batch" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "&*screen" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-pressed"
+priority = 200
+kind = "HEAD"
+hook = "screen_mouse_button_pressed_pre"
+hook_version = 1
+helper = "kit_guide_pressed.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "&*screen" },
+  { name = "button", ty = "i32", value = "button" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-key"
+priority = 200
+kind = "HEAD"
+hook = "screen_key_pressed_pre"
+hook_version = 1
+helper = "kit_guide_key.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "screen", ty = "&crate::game::native_hooks::NativeScreenView<'_>", value = "&*screen" },
+  { name = "key", ty = "&str", value = "key" },
+  { name = "repeat", ty = "bool", value = "repeat" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-char"
+priority = 200
+kind = "HEAD"
+hook = "screen_char_typed_pre"
+hook_version = 1
+helper = "kit_guide_char.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "c", ty = "char", value = "c" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-scrolled"
+priority = 200
+kind = "HEAD"
+hook = "screen_mouse_scrolled_pre"
+hook_version = 1
+helper = "kit_guide_scrolled.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "scroll", ty = "[f64; 2]", value = "scroll" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-dragged"
+priority = 200
+kind = "HEAD"
+hook = "screen_mouse_dragged_pre"
+hook_version = 1
+helper = "kit_guide_dragged.rs"
+bindings = [
+  { name = "delta", ty = "[f32; 2]", value = "delta" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-released"
+priority = 200
+kind = "HEAD"
+hook = "screen_mouse_button_released_pre"
+hook_version = 1
+helper = "kit_guide_released.rs"
+bindings = [
+  { name = "game", ty = "&crate::game::Game<'_>", value = "&*self" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-tooltip"
+priority = 200
+kind = "HEAD"
+hook = "tooltip"
+hook_version = 1
+helper = "kit_guide_tooltip.rs"
+bindings = [
+  { name = "stack", ty = "&horizon_client::items::ItemStack", value = "&*stack" },
+  { name = "lines", ty = "&mut Vec<(horizon_client::text::Text, u32)>", value = "&mut *lines" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-hide-tip"
+priority = 190
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_tooltip_render_pre"
+helper = "kit_guide_hide_tip.rs"
+bindings = [
+  { name = "cancel", ty = "&mut bool", value = "&mut *cancel" },
+]
+
+[[injection]]
+id = "enderio-kit-guide-shown"
+priority = 200
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_tooltip_render_pre"
+helper = "kit_guide_shown.rs"
+bindings = [
+  { name = "stack", ty = "&ItemStack", value = "stack" },
+]
+
+
+[[module]]
+id = "enderio-kit-marker"
+file = "crates/horizon-client/src/game.rs"
+name = "hz_kit_v14_enderio"
+source = "kit_marker.rs"
+# ---- END JEI KIT
